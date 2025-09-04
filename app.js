@@ -63,21 +63,25 @@ buttons.forEach(button => {
         }
 
         else {
-            // prevent multiple operators in a row
             if (operators.includes(value)) {
-                if (lastWasOperator) return; 
+                if (lastWasOperator) {
+                    // replace last operator
+                    string = string.slice(0, -1) + value;
+                } else {
+                    // if result is on screen, continue with it
+                    if (justEvaluated) justEvaluated = false;
+                    string += value;
+                }
                 lastWasOperator = true;
-                justEvaluated = false;
             } else {
-                // if just pressed "=", overwrite instead of concatenating
+                // if just pressed "=", clear first
                 if (justEvaluated) {
                     string = "";
                     justEvaluated = false;
                 }
+                string += value;
                 lastWasOperator = false;
             }
-
-            string += value;
             inputBox.value = string;
         }
     });
@@ -117,17 +121,22 @@ document.addEventListener('keydown', (e) => {
 
     else {
         if (operators.includes(key)) {
-            if (lastWasOperator) return;
+            if (lastWasOperator) {
+                string = string.slice(0, -1) + key; // replace operator
+            } else {
+                if (justEvaluated) justEvaluated = false;
+                string += key;
+            }
             lastWasOperator = true;
-            justEvaluated = false;
-        } else {
+        } else if (!isNaN(key) || key === ".") { 
+            // numbers and decimal
             if (justEvaluated) {
                 string = "";
                 justEvaluated = false;
             }
+            string += key;
             lastWasOperator = false;
         }
-        string += key;
         inputBox.value = string;
     }
 });
