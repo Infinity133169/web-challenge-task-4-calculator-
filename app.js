@@ -1,98 +1,133 @@
-let inputBox=document.querySelector("#input-box");
-let buttons=document.querySelectorAll("button");
-let string="";
-let digits=document.querySelector('.digit')
-buttons.forEach(button=>{
-    button.addEventListener("click",(evt)=>{
+let inputBox = document.querySelector("#input-box"); 
+let buttons = document.querySelectorAll("button");
 
-    
-        if(evt.target.innerText== "="){
-            string=eval(string);
-            inputBox.value=string;
-            if(inputBox.value==='Infinity'){
-                inputBox.value='error';
+let string = "";
+let lastWasOperator = false;
+let justEvaluated = false;
+
+const operators = ["+", "-", "*", "/", "%"];
+
+buttons.forEach(button => {
+    button.addEventListener("click", (evt) => {
+        let value = evt.target.innerText;
+
+        if (value === "=") {
+            try {
+                string = eval(string).toString();
+                inputBox.value = string;
+                if (inputBox.value === "Infinity" || inputBox.value === "NaN") {
+                    inputBox.value = "error";
+                    string = "";
+                }
+                justEvaluated = true;
+            } catch {
+                inputBox.value = "error";
+                string = "";
             }
-           
-           
-           
-        }
-    
-        else if(evt.target.innerText== "AC"){
-            string="";
-            inputBox.value=string;
-        }
-        else if(evt.target.innerText== "x²"){
-           string=inputBox.value * inputBox.value;
-           inputBox.value=string;
-        }
-        else if(evt.target.innerText== "x³"){
-           string=inputBox.value * inputBox.value * inputBox.value;
-           inputBox.value=string;
-        }
-        else if(evt.target.innerText== "1/x"){
-           string=1/(inputBox.value);
-           inputBox.value=string;
-        }
-        else if(evt.target.innerText== "√"){
-           string=Math.sqrt(inputBox.value);
-           inputBox.value=string;
         }
 
-        else if(evt.target.innerText== "DEL"){
-            string=string.toString();
-            console.log(string);
-            string=string.substring(0,string.length-1);
-            console.log(string);
-            inputBox.value=string;
-
+        else if (value === "AC") {
+            string = "";
+            inputBox.value = "";
+            justEvaluated = false;
         }
-       
 
-       
-
-        else{
-            string=string+evt.target.innerText;
-            inputBox.value=string;
-            console.log(string);
-         
-            
-
+        else if (value === "x²") {
+            string = (inputBox.value * inputBox.value).toString();
+            inputBox.value = string;
+            justEvaluated = true;
         }
-      
-    })
+
+        else if (value === "x³") {
+            string = (inputBox.value * inputBox.value * inputBox.value).toString();
+            inputBox.value = string;
+            justEvaluated = true;
+        }
+
+        else if (value === "1/x") {
+            string = (1 / inputBox.value).toString();
+            inputBox.value = string;
+            justEvaluated = true;
+        }
+
+        else if (value === "√") {
+            string = Math.sqrt(inputBox.value).toString();
+            inputBox.value = string;
+            justEvaluated = true;
+        }
+
+        else if (value === "DEL") {
+            string = string.toString().slice(0, -1);
+            inputBox.value = string;
+            lastWasOperator = operators.includes(string.slice(-1));
+        }
+
+        else {
+            // prevent multiple operators in a row
+            if (operators.includes(value)) {
+                if (lastWasOperator) return; 
+                lastWasOperator = true;
+                justEvaluated = false;
+            } else {
+                // if just pressed "=", overwrite instead of concatenating
+                if (justEvaluated) {
+                    string = "";
+                    justEvaluated = false;
+                }
+                lastWasOperator = false;
+            }
+
+            string += value;
+            inputBox.value = string;
+        }
+    });
 });
 
-document.addEventListener('keydown',(e)=>{
-    console.log("key pressed:",e.key);
+// Keyboard support
+document.addEventListener('keydown', (e) => {
     e.preventDefault();
-    
-       if(e.key==='Enter' || e.key=="="){
-            
-            string=eval(string);
-            inputBox.value=string;
-            if(inputBox.value==='Infinity'){
-                inputBox.value='error';
+    let key = e.key;
 
+    if (key === "Enter" || key === "=") {
+        try {
+            string = eval(string).toString();
+            inputBox.value = string;
+            if (inputBox.value === "Infinity" || inputBox.value === "NaN") {
+                inputBox.value = "error";
+                string = "";
             }
+            justEvaluated = true;
+        } catch {
+            inputBox.value = "error";
+            string = "";
         }
-        else if(e.key== "Delete"){
-            string="";
-            inputBox.value=string;
+    }
+
+    else if (key === "Delete") {
+        string = "";
+        inputBox.value = "";
+        justEvaluated = false;
+    }
+
+    else if (key === "Backspace") {
+        string = string.toString().slice(0, -1);
+        inputBox.value = string;
+        lastWasOperator = operators.includes(string.slice(-1));
+    }
+
+    else {
+        if (operators.includes(key)) {
+            if (lastWasOperator) return;
+            lastWasOperator = true;
+            justEvaluated = false;
+        } else {
+            if (justEvaluated) {
+                string = "";
+                justEvaluated = false;
+            }
+            lastWasOperator = false;
         }
-        else if(e.key== "Backspace"){
-            string=string.toString();
-            // console.log(string);
-            string=string.substring(0,string.length-1);
-            // console.log(string);
-            inputBox.value=string;
-
-        }
-
-
-        else{
-            string=string+e.key;
-            inputBox.value=string;
-
-        }
+        string += key;
+        inputBox.value = string;
+    }
 });
-
