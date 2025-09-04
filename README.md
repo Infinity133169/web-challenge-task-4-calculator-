@@ -29,7 +29,8 @@ Supports *basic arithmetic, scientific operations (x², x³, √, 1/x), error ha
 
 
 
+<img width="1850" height="921" alt="calc" src="https://github.com/user-attachments/assets/c613820f-b109-4af0-9c8a-87b248f61cd6" />
+![calc2](https://github.com/user-attachments/assets/e7b8dc8c-ed79-4af7-b1bb-38eb82caaf43)
 
-<img width="1618" height="951" alt="image" src="https://github.com/user-attachments/assets/76a2256b-2931-4e2f-ba47-c1869c585288" />
-![calc2](https://github.com/user-attachments/assets/0be207b8-c6d6-4ba1-9cee-3fee373f65dd)
+
 
