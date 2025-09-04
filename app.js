@@ -65,16 +65,16 @@ buttons.forEach(button => {
         else {
             if (operators.includes(value)) {
                 if (lastWasOperator) {
-                    // replace last operator
+                    
                     string = string.slice(0, -1) + value;
                 } else {
-                    // if result is on screen, continue with it
+                    
                     if (justEvaluated) justEvaluated = false;
                     string += value;
                 }
                 lastWasOperator = true;
             } else {
-                // if just pressed "=", clear first
+            
                 if (justEvaluated) {
                     string = "";
                     justEvaluated = false;
@@ -87,7 +87,7 @@ buttons.forEach(button => {
     });
 });
 
-// Keyboard support
+
 document.addEventListener('keydown', (e) => {
     e.preventDefault();
     let key = e.key;
@@ -122,14 +122,14 @@ document.addEventListener('keydown', (e) => {
     else {
         if (operators.includes(key)) {
             if (lastWasOperator) {
-                string = string.slice(0, -1) + key; // replace operator
+                string = string.slice(0, -1) + key; 
             } else {
                 if (justEvaluated) justEvaluated = false;
                 string += key;
             }
             lastWasOperator = true;
         } else if (!isNaN(key) || key === ".") { 
-            // numbers and decimal
+            
             if (justEvaluated) {
                 string = "";
                 justEvaluated = false;
@@ -140,3 +140,4 @@ document.addEventListener('keydown', (e) => {
         inputBox.value = string;
     }
 });
+
