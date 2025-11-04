@@ -34,4 +34,6 @@ Supports *basic arithmetic, scientific operations (x², x³, √, 1/x), error ha
 <img width="360" height="640" alt="calc2" src="https://github.com/user-attachments/assets/e7b8dc8c-ed79-4af7-b1bb-38eb82caaf43" />
 
 
+///////////Author is Aryan ...........
+
 
